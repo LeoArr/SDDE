@@ -25,13 +25,13 @@ class GameTextManager {
     return _instance;
   }
 
-  void addInfoText(std::string textId, std::string text, int x, int y) {
+  void addInfoText(std::string textId, std::string text, int x, int y, int ticksOffset = 0) {
     if (infoTexts.find(textId) != infoTexts.end()) {
       infoTexts[textId].addedTick = Ticker::instance()->ticks();
     } else {
       InfoText infoText = {
 	TextManager::instance()->textTexture("8bit", text, {255,0,0,0}),
-	Ticker::instance()->ticks(),
+	Ticker::instance()->ticks() + ticksOffset,
 	x, y
       };
       infoTexts[textId] = infoText;
@@ -43,7 +43,7 @@ class GameTextManager {
     Uint32 maxTicks = 20;
     std::vector<std::string> toErase;
     for (auto text : infoTexts) {
-      if (ticks - text.second.addedTick > maxTicks) {
+      if ((int)ticks - (int)text.second.addedTick > (int)maxTicks) {
 	toErase.push_back(text.first);
 	continue;
       }

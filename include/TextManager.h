@@ -40,7 +40,7 @@ class TextManager {
   }
 
   SDL_Surface* createTextSurface(std::string fontId, std::string text, SDL_Color color) {
-    return TTF_RenderText_Blended_Wrapped(fonts[fontId], text.c_str(), color, 100);
+    return TTF_RenderText_Blended_Wrapped(fonts[fontId], text.c_str(), color, 1000);
   }
 
   SDL_Texture* textTexture(std::string id, std::string text, SDL_Color color) {

@@ -10,8 +10,8 @@
 
 enum ScreenMode {
   WINDOWED = 0,
-  FULL = 2,
   FULL_DESKTOP = 1,
+  FULL = 2,
   number_of_elements = 3
 };
 

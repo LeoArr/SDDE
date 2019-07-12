@@ -121,6 +121,7 @@ bool Game::toggleFullscreen() {
       ConfigParams::instance()->addParam("screen-mode", std::to_string(static_cast<int>(_screenMode)));
       
       SDL_SetWindowFullscreen(_window, getScreenMode(_screenMode));
+      GameTextManager::instance()->addInfoText("screenModeChange", "Screen mode: " + std::to_string(static_cast<int>(_screenMode) + 1) + "/" + std::to_string(static_cast<int>(ScreenMode::number_of_elements)), 0, 0, 100);
       return true;
     }
     return false;
