@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<state>
+    <game>
+        <dev>true</dev>
+    </game>
+    <textures>
+        <texture fileName="spritesheet-demo.png" id="demo"/>
+        <texture fileName="frame.png" id="frame"/>
+        <texture fileName="cursor.png" id="cursor"/>
+    </textures>
+    <fonts>
+      <font id="mystic" fileName="MYSTP.TTF" ptSize="32" />
+      <font id="8bit" fileName="type_writer.ttf" ptSize="32" />
+    </fonts>
+    <objects>
+	<object type="Cursor" x="0" y="0" width="25"
+		height="25" textureId="cursor">
+	</object>
+    </objects>
+</state>

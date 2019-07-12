@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<state>
+  <object type="Player" x="0" y="0" z="10" width="180"
+          height="300" textureId="demo" />
+  <object type="Wall" x="100" y="100" z="2" width="180"
+          height="180" textureId="demo" >
+    <boxes>
+      <box x="10" y="10" w="100" h="100"/>
+      <box x="0" y="0" w="100" h="100"/>
+    </boxes>
+  </object>
+  <object type="Prop" textureId="demo" x="400" y="10" z="11" width="180" height="300"
+	  baseRow="1" baseFrame="0" numFrames="4" animSpeed="10"/>
+</state>

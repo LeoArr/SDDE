@@ -1,3 +1,0 @@
-#include <TextureManager.h>
-
-static TextManager* TextureManager::_instance = NULL:
