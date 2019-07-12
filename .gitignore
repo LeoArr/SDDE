@@ -1,6 +1,3 @@
-CMakeFiles
-CMakeCache.txt
-DartConfiguration.tcl
-*~
+**/*~
 obj
 bin
