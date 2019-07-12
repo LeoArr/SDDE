@@ -8,6 +8,13 @@
 #include <utils/Vector2D.h>
 #include <iostream>
 
+enum ScreenMode {
+  WINDOWED = 0,
+  FULL = 2,
+  FULL_DESKTOP = 1,
+  number_of_elements = 3
+};
+
 class Game {
     public:
         static Game* instance() {
@@ -41,7 +48,11 @@ class Game {
         bool doResetGame();
         bool toggleFullscreen();
 
-        bool _isRunning, _isFullscreen;
+	Uint32 getScreenMode(ScreenMode mode);
+	void nextScreenMode();
+
+	ScreenMode _screenMode;
+        bool _isRunning;
         int _fps, _width, _height;
         Uint32 _delayTime;
         const char* _title;

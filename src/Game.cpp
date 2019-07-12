@@ -40,8 +40,7 @@ bool Game::init() {
 }
 
 void Game::initWindowAndRenderer() {
-  int flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL |
-    (_isFullscreen ? SDL_WINDOW_FULLSCREEN : 0) |
+  int flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | (getScreenMode(_screenMode)) |
     SDL_WINDOW_MOUSE_CAPTURE | SDL_WINDOW_MOUSE_FOCUS |
     SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_INPUT_GRABBED;
   _window = SDL_CreateWindow(_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, flags);
@@ -66,9 +65,24 @@ void Game::initVars() {
     _height = ConfigParams::instance()->getI("window-height");
     _fps = ConfigParams::instance()->getI("fps");
     _delayTime = 1000.0f / _fps;
-    _isFullscreen = ConfigParams::instance()->get("window-fullscreen") == "true";
+    _screenMode = static_cast<ScreenMode>(ConfigParams::instance()->getI("screen-mode"));
     std::string sTitle = ConfigParams::instance()->get("title");
     _title = sTitle.c_str();
+}
+
+Uint32 Game::getScreenMode(ScreenMode mode) {
+  switch (mode) {
+  case ScreenMode::FULL:
+    return SDL_WINDOW_FULLSCREEN;
+  case ScreenMode::FULL_DESKTOP:
+    return SDL_WINDOW_FULLSCREEN_DESKTOP;
+  default:
+    return 0;
+  }
+}
+
+void Game::nextScreenMode() {
+  _screenMode = static_cast<ScreenMode>((static_cast<int>(_screenMode) + 1) % static_cast<int>(ScreenMode::number_of_elements));
 }
 
 void Game::handleEvents() {
@@ -103,13 +117,11 @@ bool Game::doResetGame() {
 
 bool Game::toggleFullscreen() {
     if (InputHandler::instance()->isKeyDown(SDL_SCANCODE_LCTRL) && InputHandler::instance()->isKeyPressed(SDL_SCANCODE_F)) {
-        _isFullscreen = !_isFullscreen;
-        ConfigParams::instance()->addParam("window-fullscreen", _isFullscreen ? "true" : "false");
-	const char* platform = SDL_GetPlatform();
-	const char* windows = "Windows";
-	Uint32 flag = platform == windows ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
-        SDL_SetWindowFullscreen(_window, _isFullscreen ? flag : 0);
-        return true;
+      nextScreenMode();
+      ConfigParams::instance()->addParam("screen-mode", std::to_string(static_cast<int>(_screenMode)));
+      
+      SDL_SetWindowFullscreen(_window, getScreenMode(_screenMode));
+      return true;
     }
     return false;
 }
