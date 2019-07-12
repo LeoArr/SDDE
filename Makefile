@@ -9,7 +9,7 @@ packages = sdl2 SDL2_image SDL2_ttf
 CPPFLAGS := $(shell pkg-config --cflags $(packages))
 LIBS := $(shell pkg-config --static --libs $(packages))
 
-BIN=a.out
+BIN=bin/a.out
 
 all: objs
 	g++ -std=$(CC) $(CXXFLAGS) $(CPPFLAGS) $(SRC) -I$(INC_DIR) $(LIBS) -o $(BIN) \
