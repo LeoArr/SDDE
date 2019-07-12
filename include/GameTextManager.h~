@@ -1,0 +1,16 @@
+#ifndef GAME_TEXT_MANAGER
+#define GAME_TEXT_MANAGER
+
+class GameTextManager {
+ public:
+  static GameTextManager* instace() {
+    if (_instance == NULL) {
+      _instance = new GameTextManager();
+    }
+    return _instance;
+  }
+ private:
+  static GameTextManager* _instance;
+};
+
+#endif

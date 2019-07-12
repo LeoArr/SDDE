@@ -1,0 +1,45 @@
+#ifndef GAME_OBJECTS_LAYER
+#define GAME_OBJECTS_LAYER
+
+#include <GameObject.h>
+#include <vector>
+#include <algorithm>
+
+class GameObjectsLayer {
+public:
+  GameObjectsLayer() : _isDirty(false) {};
+  ~GameObjectsLayer() {
+    for (auto it : _gameObjects) {
+      delete it;
+    }
+    _gameObjects.clear();
+  }
+  void add(GameObject *gameObject) {
+    _gameObjects.push_back(gameObject);
+    _isDirty = true;
+  }
+
+  GameObject* remove(GameObject *gameObject) {
+    for (auto it : _gameObjects) {
+      if (it == gameObject) {
+	_gameObjects.erase(it);
+	break;
+      }
+    }
+    _isDirty = true;
+  }
+  
+  bool isDirty() {
+    return _isDirty;
+  }
+
+  void wasTouched() {
+    _isDirty = false;
+  }
+
+private:
+  bool _isDirty;
+  std::vector<GameObject*> _gameObjects;
+};
+
+#endif
