@@ -6,11 +6,17 @@ Prop::Prop() : SDLGameObject() {
 }
 
 void Prop::update() {
-    if (_numFrames < 2 || _animSpeed == 0) return;
-    _curFrame = _baseFrame + (int)((_ticks / _animSpeed ) % (_numFrames));
+  _velocity = _velocity + (_acceleration / ConfigParams::instance()->getI("fps"));
+  _position += _velocity;
+  if (_numFrames < 2 || _animSpeed == 0) return;
+  _curFrame = _baseFrame + (int)((_ticks / _animSpeed ) % (_numFrames));
+  if (_ticks < _animSpeed * _numFrames) {
     _ticks++;
-    if (_ticks > _animSpeed * _numFrames)
-        _ticks = 0;
+  } else {
+    if (_loop) {
+      _ticks++;
+    }
+  }
 }
 
 void Prop::load(const GameObjectParams *params) {

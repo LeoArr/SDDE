@@ -43,11 +43,13 @@ class GameTextManager {
     Uint32 maxTicks = 20;
     std::vector<std::string> toErase;
     for (auto text : infoTexts) {
-      if ((int)ticks - (int)text.second.addedTick > (int)maxTicks) {
+      if (ticks < text.second.addedTick)
+	continue;
+      if (ticks - text.second.addedTick > maxTicks) {
 	toErase.push_back(text.first);
 	continue;
       }
-      Uint8 alpha = 255 * (1.0f - ((float) ticks - text.second.addedTick) / (float) maxTicks);
+      Uint8 alpha = 255 * (1.0f - ((float) ticks - (float) text.second.addedTick) / (float) maxTicks);
       SDL_SetTextureAlphaMod(text.second.texture, alpha);
     }
     for (auto id : toErase) {

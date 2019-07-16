@@ -4,6 +4,7 @@
 #include <StateParser.h>
 #include <GameObject.h>
 #include <GameObjectsLayers.h>
+#include <GameObjectParams.h>
 #include <states/GameState.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
@@ -25,7 +26,7 @@ class TestState: public GameState {
         GameObjectsLayers _gameObjectsLayers;
         std::vector<GameObject*> _hudObjects;
         std::vector<std::string> _textureIds;
-        std::map<std::string, std::string> _gameState;
+        GameObjectParams _gameState;
         static const std::string _stateId;
 };
 

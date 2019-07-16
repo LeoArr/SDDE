@@ -9,6 +9,6 @@
       <box x="0" y="0" w="100" h="100"/>
     </boxes>
   </object>
-  <object type="Prop" textureId="demo" x="400" y="10" z="11" width="180" height="300"
-	  baseRow="1" baseFrame="0" numFrames="4" animSpeed="10"/>
+  <object type="Prop" textureId="demo" x="600" y="10" z="11" width="180" height="300"
+	  baseRow="1" baseFrame="0" numFrames="4" animSpeed="10" loop="true"/>
 </state>

@@ -11,7 +11,7 @@ StateParser::StateParser() {
 bool StateParser::parseState(std::string stateFile,
                             std::vector<GameObject*> *gameObjects,
                             std::vector<std::string> *textureIds,
-                            std::map<std::string, std::string> *gameState) {
+                            GameObjectParams *gameState) {
     TiXmlDocument xmlDoc;
     if (!xmlDoc.LoadFile(ConfigParams::instance()->get("assets-folder") + 
                         ConfigParams::instance()->get("states-folder") + stateFile)) {
@@ -60,28 +60,33 @@ bool StateParser::parseSceneObjects(std::string fileName, GameObjectsLayers *gam
   }
   TiXmlElement *root = xmlDoc.RootElement();
   for (auto elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
-        GameObjectParams *params = new GameObjectParams();
-        for (auto attr = elem->FirstAttribute(); attr != NULL; attr = attr->Next()) {
-            std::string key = attr->Name();
-            std::string value = attr->Value();
-            params->addParam(key, value);
-        }
-        Logger::instance()->log("Creating:");
-        Logger::instance()->log(elem->Attribute("type"));
-        GameObject* gameObject = GameObjectFactory::instance()->create(elem->Attribute("type"));
-        for (auto childElem = elem->FirstChildElement(); childElem != NULL; childElem = childElem->NextSiblingElement()) {
-            if (std::string(childElem->Value()) == "boxes") {
-                if (MouseInteractable *mi = dynamic_cast<MouseInteractable*>(gameObject)) {
-                    addClickBoxes(mi, childElem);
-                }
-            }
-        }
-	Logger::instance()->log("Adding to layer: ");
-	Logger::instance()->log(params->getI("z"));
-        gameObjectsLayers->addObject(params->getI("z"), gameObject);
-        gameObject->load(params);
-    }
+    addGameObject(elem, gameObjectsLayers);
+  }
   return true;
+}
+
+void StateParser::addGameObject(TiXmlElement *elem, GameObjectsLayers *gameObjectsLayers) {
+  GameObjectParams *params = new GameObjectParams();
+  for (auto attr = elem->FirstAttribute(); attr != NULL; attr = attr->Next()) {
+    std::string key = attr->Name();
+    std::string value = attr->Value();
+    params->addParam(key, value);
+  }
+  Logger::instance()->log("Creating:");
+  Logger::instance()->log(elem->Attribute("type"));
+  GameObject* gameObject = GameObjectFactory::instance()->create(elem->Attribute("type"));
+  for (auto childElem = elem->FirstChildElement(); childElem != NULL; childElem = childElem->NextSiblingElement()) {
+    if (std::string(childElem->Value()) == "boxes") {
+      if (MouseInteractable *mi = dynamic_cast<MouseInteractable*>(gameObject)) {
+	addClickBoxes(mi, childElem);
+      }
+    }
+  }
+  Logger::instance()->log("Adding to layer: ");
+  Logger::instance()->log(params->getI("z"));
+  gameObjectsLayers->addObject(params->getI("z"), gameObject);
+  gameObject->load(params);
+  delete params;
 }
 
 void StateParser::addClickBoxes(MouseInteractable *mi, TiXmlElement *elem) {
@@ -138,11 +143,11 @@ bool StateParser::parseTextures(TiXmlElement* root, std::vector<std::string> *te
     return true;
 }
 
-bool StateParser::parseGameState(TiXmlElement *root, std::map<std::string, std::string> *gameState) {
+bool StateParser::parseGameState(TiXmlElement *root, GameObjectParams *gameState) {
     for (auto elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
         std::string key = std::string(elem->Value());
         std::string value = std::string(elem->GetText());
-        (*gameState)[key] = value;
+        gameState->addParam(key, value);
     }
     return true;
 }

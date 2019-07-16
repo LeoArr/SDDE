@@ -27,7 +27,7 @@ class StateParser {
         bool parseState(std::string stateFile,
             std::vector<GameObject*> *gameObjects = NULL,
             std::vector<std::string> *textureIds = NULL,
-            std::map<std::string, std::string> *gameState = NULL);
+            GameObjectParams *gameState = NULL);
         bool parseSceneObjects(std::string fileName, GameObjectsLayers *gameObjectsLayers);
     private:
         StateParser();
@@ -38,11 +38,13 @@ class StateParser {
             std::vector<std::string> *textureIds);
 
         bool parseGameState(TiXmlElement *stateRoot,
-            std::map<std::string, std::string> *gameState);
+            GameObjectParams *gameState);
 
 	bool parseFonts(TiXmlElement *stateRoot);
 
 	void addClickBoxes(MouseInteractable *mi, TiXmlElement *elem);
+
+	void addGameObject(TiXmlElement *elem, GameObjectsLayers *gameObjectsLayers);
 
         static StateParser *_instance;
 };

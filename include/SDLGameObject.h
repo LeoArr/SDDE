@@ -21,6 +21,7 @@ class SDLGameObject : public GameObject {
         SDLGameObject();
         Vector2D _position, _velocity, _acceleration;
         int _width, _height, _curRow, _baseRow, _curFrame, _baseFrame, _numFrames, _animSpeed;
+	bool _loop;
         std::string _textureId;
 };
 
