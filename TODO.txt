@@ -1,0 +1,6 @@
+Kolla om src/assets kan tas bort, isf gor det
+
+Bygg sa att en kan scripta via xml
+     lista ut ett bra satt att skicka State till script
+     Lista ut ett bra satt att lata script andra gameobjects
+     
