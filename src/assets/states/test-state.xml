@@ -20,7 +20,7 @@
         </object>
         <object type="Cursor" x="0" y="0" width="25"
             height="25" textureId="cursor"/>
-        <object type="Prop" textureId="demo" x="400" y="10" width="180" height="300"
-            baseRow="1" baseFrame="0" numFrames="4" animSpeed="10"/>
+        <object type="Prop" textureId="demo" x="900" y="10" width="180" height="300"
+            baseRow="1" baseFrame="0" numFrames="4" animSpeed="10" loop="false"/>
     </objects>
 </state>

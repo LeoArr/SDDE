@@ -1,3 +1,5 @@
+#include <scripting/LogEventToken.h>
+#include <scripting/ConditionalEqualityToken.h>
 #include <states/TestState.h>
 #include <Game.h>
 #include <Ticker.h>
@@ -32,6 +34,12 @@ bool Game::init() {
     _gameStateMachine = new GameStateMachine();
     TestState *testState = new TestState();
     _gameStateMachine->pushState(testState);
+
+    ScriptToken* conToken = new ConditionalEqualityToken("fps", "30", true);
+    ScriptToken* token = new LogEventToken("HEEEEEEEEEEEEEEEEEEEJ");
+    conToken->addChild(token);
+    conToken->run();
+    delete token;
 #endif
 
     _isRunning = true;

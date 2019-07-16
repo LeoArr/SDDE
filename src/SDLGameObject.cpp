@@ -6,8 +6,8 @@ SDLGameObject::SDLGameObject() {
 
 void SDLGameObject::load(const GameObjectParams *params) {
     _position = Vector2D(params->getI("x"), params->getI("y"));
-    _velocity = Vector2D(0,0);
-    _acceleration = Vector2D(0,0);
+    _velocity = Vector2D(params->getI("v_x"), params->getI("v_y"));
+    _acceleration = Vector2D(params->getI("a_x"), params->getI("a_y"));
     _width = params->getI("width");
     _height = params->getI("height");
     _textureId = params->get("textureId");
@@ -15,7 +15,7 @@ void SDLGameObject::load(const GameObjectParams *params) {
     _baseFrame = params->getI("baseFrame");
     _numFrames = params->getI("numFrames");
     _animSpeed = params->getI("animSpeed");
-    delete params;
+    _loop = params->get("loop") != "false";
     _curFrame = _baseFrame;
     _curRow = _baseRow;
 }
