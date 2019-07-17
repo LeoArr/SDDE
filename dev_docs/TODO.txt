@@ -1,0 +1,20 @@
+TODO:
+Bygg sa att en kan scripta via xml
+     lista ut ett bra satt att skicka State till script
+     Lista ut ett bra satt att lata script andra gameobjects
+     
+
+Story Line:
+Today 1969
+
+1892
+A strange couple erected the house.
+They were scientists and very secretive.
+
+After they moved in strange occurences began. 
+Chanting was heard from the house, often more than two voices was reported.
+Dogs barking. 
+Dogs turning up dead.
+Wierd flashes of light eminating from the house in the night.
+
+One special occurance happened on 6th of november 1919. 
