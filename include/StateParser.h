@@ -4,6 +4,7 @@
 #include <GameObjectFactory.h>
 #include <GameObjectParams.h>
 #include <objects/MouseInteractable.h>
+#include <objects/EventTriggerer.h>
 #include <GameObjectsLayers.h>
 #include <TextureManager.h>
 #include <GameObject.h>
@@ -43,6 +44,8 @@ class StateParser {
 	bool parseFonts(TiXmlElement *stateRoot);
 
 	void addClickBoxes(MouseInteractable *mi, TiXmlElement *elem);
+
+	void addEventScripts(EventTriggerer *et, TiXmlElement *elem);
 
 	void addGameObject(TiXmlElement *elem, GameObjectsLayers *gameObjectsLayers);
 

@@ -46,7 +46,12 @@ class MouseInteractable {
     public:
         virtual void onClick() = 0;
         virtual void onMouseOver() = 0;
-        virtual bool isMouseOvered(Vector2D *mousePos) = 0;
+	bool isClicked(Vector2D *mousePos) {
+	  return isClickedInternal(mousePos);
+	}
+        bool isMouseOvered(Vector2D *mousePos) {
+	  return isMouseOveredInternal(mousePos);
+	}
         virtual void addClickBox(ClickBox *box) {
             _clickBoxes.push_back(box);
         }
@@ -56,27 +61,39 @@ class MouseInteractable {
             }
             _clickBoxes.clear();
         }
+	void update(Vector2D *parentPos) {
+	  _ownerPosition = parentPos;
+	  Vector2D *mousePos = InputHandler::instance()->getMousePosition();
+	  if (isClicked(mousePos)) {
+	    onClick();
+	  }
+	  if (isMouseOvered(mousePos)) {
+	    onMouseOver();
+	  }
+	}
     protected:
         MouseInteractable() {}
         std::vector<ClickBox*> _clickBoxes;
-        virtual bool isClickedInternal(Vector2D *parentPos, Vector2D *mousePos) {
+        virtual bool isClickedInternal(Vector2D *mousePos) {
             return InputHandler::instance()->getMouseButtonState(MouseButton::LEFT) &&
-                isMouseOveredInternal(parentPos, mousePos);
+                isMouseOveredInternal(mousePos);
         }
-        virtual bool isMouseOveredInternal(Vector2D *parentPos, Vector2D *mousePos) {
+        virtual bool isMouseOveredInternal(Vector2D *mousePos) {
             return std::any_of(_clickBoxes.begin(), _clickBoxes.end(),
-                [parentPos, mousePos](auto box) {
-                    return box->isInside(parentPos, mousePos);
-                });
+			       [this, mousePos](auto box) {
+				 return box->isInside(_ownerPosition, mousePos);
+			       });
         }
-        virtual void drawBoxes(Vector2D *parentPos) {
+        virtual void drawBoxes() {
             auto renderer = Game::instance()->getRenderer();
             SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
             for (auto box : _clickBoxes) {
-                box->draw(parentPos, renderer);
+                box->draw(_ownerPosition, renderer);
             }
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         }
+ private:
+	Vector2D *_ownerPosition;
 };
 
 #endif

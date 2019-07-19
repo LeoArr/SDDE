@@ -3,11 +3,12 @@
 
 #include <GameTextManager.h>
 #include <objects/MouseInteractable.h>
+#include <objects/EventTriggerer.h>
 #include <SDLGameObject.h>
 #include <InputHandler.h>
 #include <iostream>
 
-class Wall : public SDLGameObject, public MouseInteractable {
+class Wall : public SDLGameObject, public MouseInteractable, public EventTriggerer {
     public:
         Wall();
         void update();
@@ -21,7 +22,6 @@ class Wall : public SDLGameObject, public MouseInteractable {
         void onMouseOver() {
 	  GameTextManager::instance()->addInfoText("2", "INTE \n permanent", _position.getX(), _position.getY());
         }
-        bool isMouseOvered(Vector2D *mousePos);
     
 };
 

@@ -11,6 +11,9 @@ class ConfigParams : public GameObjectParams {
             }
             return _instance;
         }
+	~ConfigParams() {
+	  delete _instance;
+	}
     private:
         ConfigParams() {}
         static ConfigParams* _instance;

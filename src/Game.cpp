@@ -1,6 +1,8 @@
+//dev
 #include <scripting/LogEventToken.h>
 #include <scripting/ConditionalEqualityToken.h>
-#include <states/TestState.h>
+#include <states/AdventureState.h>
+//
 #include <Game.h>
 #include <Ticker.h>
 #include <InputHandler.h>
@@ -32,14 +34,14 @@ bool Game::init() {
     Logger::instance()->log("Game init: Setting vars done");
 #ifdef DEBUG
     _gameStateMachine = new GameStateMachine();
-    TestState *testState = new TestState();
+    AdventureState *testState = new AdventureState();
     _gameStateMachine->pushState(testState);
 
     ScriptToken* conToken = new ConditionalEqualityToken("fps", "30", true);
     ScriptToken* token = new LogEventToken("HEEEEEEEEEEEEEEEEEEEJ");
     conToken->addChild(token);
     conToken->run();
-    delete token;
+    delete conToken;
 #endif
 
     _isRunning = true;
@@ -97,13 +99,14 @@ void Game::handleEvents() {
 #ifdef DEBUG
     if (doResetGame()) return;
 #endif
-    if (!InputHandler::instance()->update())
-        _isRunning = false;
+    InputHandler::instance()->update();
     if (toggleFullscreen()) return;    
 }
 
 void Game::update() {
-    _gameStateMachine->update();
+  if (!_gameStateMachine->update()) {
+    _isRunning = false;
+  }
 }
 
 void Game::render() {

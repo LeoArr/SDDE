@@ -17,6 +17,8 @@ void Prop::update() {
       _ticks++;
     }
   }
+  onTimer(_ticks);
+  MouseInteractable::update(&_position);
 }
 
 void Prop::load(const GameObjectParams *params) {
@@ -28,4 +30,5 @@ void Prop::draw(Camera *camera) {
 }
 void Prop::draw() {
     SDLGameObject::draw();
+    drawBoxes();
 }

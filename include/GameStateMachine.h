@@ -14,7 +14,7 @@ class GameStateMachine {
         void popState();
         void changeState(GameState *newState);
 
-        void update();
+        bool update();
         void render(SDL_Renderer *renderer);
     
     private:

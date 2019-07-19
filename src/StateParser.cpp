@@ -80,6 +80,10 @@ void StateParser::addGameObject(TiXmlElement *elem, GameObjectsLayers *gameObjec
       if (MouseInteractable *mi = dynamic_cast<MouseInteractable*>(gameObject)) {
 	addClickBoxes(mi, childElem);
       }
+    } else if (std::string(childElem->Value()) == "scripts") {
+      if (EventTriggerer *et = dynamic_cast<EventTriggerer*>(gameObject)) {
+      	addEventScripts(et, childElem);
+      }
     }
   }
   Logger::instance()->log("Adding to layer: ");
@@ -107,6 +111,43 @@ void StateParser::addClickBoxes(MouseInteractable *mi, TiXmlElement *elem) {
         }
         mi->addClickBox(new ClickBox(new Vector2D(x, y), w, h));
     }
+}
+
+ScriptToken* buildScriptFromBody(TiXmlElement *elem) {
+  ScriptToken* result = NULL;
+  for (auto scriptElem = elem->FirstChildElement(); scriptElem != NULL; scriptElem = scriptElem->NextSiblingElement()) {
+    std::string type = scriptElem->Attribute("type");
+    if (type == "conditional-equality") {
+      std::string key = scriptElem->Attribute("key");
+      std::string value = scriptElem->Attribute("value");
+      std::string equalsString = scriptElem->Attribute("equals");
+      bool equals = equalsString != "false";
+      result = new ConditionalEqualityToken(key, value, equals);
+    } else if (type == "log-event") {
+      std::string text = scriptElem->Attribute("text");
+      result = new LogEventToken(text);
+    }
+    if (result != NULL) {
+      Logger::instance()->log("Script added: " + type);
+      result->addChild(buildScriptFromBody(scriptElem));
+    }
+  }
+  return result;
+}
+
+void StateParser::addEventScripts(EventTriggerer *et, TiXmlElement *elem) {
+  for (auto scriptElem = elem->FirstChildElement(); scriptElem != NULL; scriptElem = scriptElem->NextSiblingElement()) {
+    Logger::instance()->log(scriptElem->Value());
+    std::string trigger = scriptElem->Attribute("trigger");
+    if (trigger == "timer") {
+      int triggerTime = std::stoi(scriptElem->Attribute("trigger-time"));
+      et->addTimerTriggeredScript(triggerTime, buildScriptFromBody(scriptElem));
+    } else if (trigger == "click") {
+      et->setOnClickScript(buildScriptFromBody(scriptElem));
+    } else if (trigger == "mouse-over") {
+      et->setOnMouseOverScript(buildScriptFromBody(scriptElem));
+    }
+  }
 }
 
 bool StateParser::parseObjects(TiXmlElement *root, std::vector<GameObject*> *gameObjects) {
