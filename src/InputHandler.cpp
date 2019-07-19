@@ -10,9 +10,6 @@ InputHandler::~InputHandler() {
 bool InputHandler::update() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT || isKeyDown(SDL_SCANCODE_ESCAPE)) {
-            return false;
-        }
         handleMouseButtonEvents(&event);
         handleMouseMotionEvents(&event);
         handleKeyboardState(&event);

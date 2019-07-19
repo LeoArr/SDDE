@@ -65,6 +65,14 @@ public:
     return &_layers;
   }
 
+  void updateGameObjects() {
+    for (auto layer : _layers) {
+      for (auto object : (*layer.second->getObjects())) {
+	object->update();
+      }
+    }
+  }
+
 private:
   std::map<int, GameObjectsLayer*> _layers;
   bool _isDirty;

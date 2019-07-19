@@ -1,4 +1,5 @@
 #include <GameStateMachine.h>
+#include <Logger.h>
 
 GameStateMachine::~GameStateMachine() {
     for (auto state : _gameStates) {
@@ -31,19 +32,23 @@ void GameStateMachine::changeState(GameState* newState) {
     }
 }
 
-void GameStateMachine::update() {
-    bool isFirst = true;
-    auto it = _gameStates.end();
-    while (it > _gameStates.begin()) {
-        it--;
-        if (!(*it)->update(isFirst)) {
-            if ((*it)->onExit()) {
-                delete (*it);
-                it = _gameStates.erase(it);
-            }
-        }
-        isFirst = false;
+bool GameStateMachine::update() {
+  if (_gameStates.empty())
+    return false;
+  bool isFirst = true;
+  auto it = _gameStates.end();
+  while (it > _gameStates.begin()) {
+    it--;
+    if (!(*it)->update(isFirst)) {
+      Logger::instance()->log("NOOOOT");
+      if ((*it)->onExit()) {
+	delete (*it);
+	it = _gameStates.erase(it);
+      }
     }
+    isFirst = false;
+  }
+  return true;
 }
 
 void GameStateMachine::render(SDL_Renderer *renderer) {

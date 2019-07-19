@@ -7,7 +7,8 @@ class ScriptToken {
  public:
   virtual void run() = 0;
   void addChild(ScriptToken* token) {
-    children.push_back(token);
+    if (token != NULL)
+      children.push_back(token);
   }
   virtual ~ScriptToken() {
     for (auto child : children) {

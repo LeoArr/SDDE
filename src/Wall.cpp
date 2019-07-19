@@ -13,17 +13,14 @@ void Wall::update() {
   if (isMouseOvered(InputHandler::instance()->getMousePosition())) {
     onMouseOver();
   }
-}
-
-bool Wall::isMouseOvered(Vector2D *mousePos) {
-  return isMouseOveredInternal(&_position, mousePos);
+  MouseInteractable::update(&_position);
 }
 
 void Wall::draw(Camera *camera) {
     SDLGameObject::draw();
-    drawBoxes(&_position);
+    drawBoxes();
 }
 void Wall::draw() {
     SDLGameObject::draw();
-    drawBoxes(&_position);
+    drawBoxes();
 }
